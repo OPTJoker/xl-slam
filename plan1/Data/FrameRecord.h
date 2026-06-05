@@ -15,6 +15,9 @@
 @property (nonatomic) simd_quatf quaternion;
 @property (nonatomic) simd_float3x3 intrinsics;
 
+@property (nonatomic) size_t depthWidth;
+@property (nonatomic) size_t depthHeight;
+
 @property (nonatomic, strong) NSData *jpegData;
 @property (nonatomic, strong) NSData *depthData;
 @property (nonatomic, strong) NSData *confidenceData;

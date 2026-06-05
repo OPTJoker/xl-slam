@@ -147,7 +147,8 @@
 				DEVELOPMENT_TEAM = MCKS3Y3QHZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = plan1/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "plan1 needs camera access to scan and map the environment using LiDAR";
+				INFOPLIST_KEY_NSCameraUsageDescription = "摄像头打开才能玩AR呀";
+				INFOPLIST_KEY_NSMotionUsageDescription = "需要打开权限来获取相机位姿，保证建模的准确性";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -177,7 +178,8 @@
 				DEVELOPMENT_TEAM = MCKS3Y3QHZ;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = plan1/Info.plist;
-				INFOPLIST_KEY_NSCameraUsageDescription = "plan1 needs camera access to scan and map the environment using LiDAR";
+				INFOPLIST_KEY_NSCameraUsageDescription = "摄像头打开才能玩AR呀";
+				INFOPLIST_KEY_NSMotionUsageDescription = "需要打开权限来获取相机位姿，保证建模的准确性";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

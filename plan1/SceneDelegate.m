@@ -15,42 +15,42 @@
 
 
 - (void)scene:(UIScene *)scene willConnectToSession:(UISceneSession *)session options:(UISceneConnectionOptions *)connectionOptions {
-    // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-    // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-    // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
+    // 在此可选地配置 UIWindow 并将其附加到 UIWindowScene
+    // 如果使用 Storyboard，window 属性会自动初始化并附加到场景
+    // 此委托方法不表示连接中的场景或会话是新创建的
 }
 
 
 - (void)sceneDidDisconnect:(UIScene *)scene {
-    // Called as the scene is being released by the system.
-    // This occurs shortly after the scene enters the background, or when its session is discarded.
-    // Release any resources associated with this scene that can be re-created the next time the scene connects.
-    // The scene may re-connect later, as its session was not necessarily discarded (see `application:didDiscardSceneSessions` instead).
+    // 场景被系统释放时调用
+    // 在场景进入后台或会话被丢弃后不久触发
+    // 释放与此场景相关的资源，这些资源可在场景重新连接时重建
+    // 场景后续可能重新连接，因为其会话不一定被丢弃
 }
 
 
 - (void)sceneDidBecomeActive:(UIScene *)scene {
-    // Called when the scene has moved from an inactive state to an active state.
-    // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
+    // 场景从非活跃状态切换到活跃状态时调用
+    // 在此重启场景非活跃时暂停（或未启动）的任务
 }
 
 
 - (void)sceneWillResignActive:(UIScene *)scene {
-    // Called when the scene will move from an active state to an inactive state.
-    // This may occur due to temporary interruptions (ex. an incoming phone call).
+    // 场景即将从活跃状态切换到非活跃状态时调用
+    // 可能由于临时中断导致（如来电）
 }
 
 
 - (void)sceneWillEnterForeground:(UIScene *)scene {
-    // Called as the scene transitions from the background to the foreground.
-    // Use this method to undo the changes made on entering the background.
+    // 场景从后台切换到前台时调用
+    // 在此撤销进入后台时所做的更改
 }
 
 
 - (void)sceneDidEnterBackground:(UIScene *)scene {
-    // Called as the scene transitions from the foreground to the background.
-    // Use this method to save data, release shared resources, and store enough scene-specific state information
-    // to restore the scene back to its current state.
+    // 场景从前台切换到后台时调用
+    // 在此保存数据、释放共享资源，并存储足够的状态信息
+    // 以便将来将场景恢复到当前状态
 }
 
 

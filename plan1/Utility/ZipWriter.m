@@ -19,7 +19,7 @@
 
 @implementation ZipWriter
 
-#pragma mark - Init
+#pragma mark - 初始化
 
 - (instancetype)initWithPath:(NSString *)path {
     self = [super init];
@@ -34,7 +34,7 @@
     return self;
 }
 
-#pragma mark - Public
+#pragma mark - 公开方法
 
 - (BOOL)addFileWithName:(NSString *)name data:(NSData *)data {
     if (!name || !data) {
@@ -45,7 +45,7 @@
     uLong crc = crc32(0, data.bytes, (uInt)data.length);
     uint32_t size = (uint32_t)data.length;
 
-    // --- Local file header ---
+    // --- 本地文件头 ---
     NSMutableData *localHeader = [[NSMutableData alloc] init];
 
     uint32_t signature = 0x04034b50;
@@ -57,7 +57,7 @@
     uint16_t flags = 0;
     [localHeader appendBytes:&flags length:2];
 
-    uint16_t method = 0; // stored
+    uint16_t method = 0; // 不压缩（Stored 模式）
     [localHeader appendBytes:&method length:2];
 
     uint16_t modTime = 0;
@@ -77,11 +77,11 @@
 
     [localHeader appendData:nameData];
 
-    // Write local header + file data
+    // 写入本地文件头 + 文件数据
     [self.fileData appendData:localHeader];
     [self.fileData appendData:data];
 
-    // --- Central directory entry ---
+    // --- 中央目录条目 ---
     NSMutableData *cdEntry = [[NSMutableData alloc] init];
 
     uint32_t cdSignature = 0x02014b50;
@@ -130,14 +130,14 @@
 - (BOOL)close {
     uint32_t cdOffset = (uint32_t)self.fileData.length;
 
-    // Write central directory
+    // 写入中央目录
     for (NSData *entry in self.centralDirectory) {
         [self.fileData appendData:entry];
     }
 
     uint32_t cdSize = (uint32_t)(self.fileData.length - cdOffset);
 
-    // --- End of central directory record ---
+    // --- 中央目录结束记录 ---
     NSMutableData *eocd = [[NSMutableData alloc] init];
 
     uint32_t eocdSignature = 0x06054b50;
@@ -159,7 +159,7 @@
 
     [self.fileData appendData:eocd];
 
-    // Write to disk
+    // 写入磁盘文件
     return [self.fileData writeToFile:self.outputPath atomically:YES];
 }
 

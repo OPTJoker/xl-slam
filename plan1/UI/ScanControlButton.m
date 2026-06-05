@@ -7,7 +7,7 @@
 
 #import "ScanControlButton.h"
 
-// Soft colors
+// 柔和配色
 static UIColor *MilkGreenColor(void) {
     return [UIColor colorWithRed:0.529 green:0.910 blue:0.584 alpha:1.0]; // #BAE8C8
 }
@@ -28,7 +28,7 @@ static CGFloat const kShadowOpacity = 0.25;
 
 @implementation ScanControlButton
 
-#pragma mark - Init
+#pragma mark - 初始化
 
 - (instancetype)init {
     self = [super initWithFrame:CGRectMake(0, 0, kButtonSize, kButtonSize)];
@@ -44,7 +44,7 @@ static CGFloat const kShadowOpacity = 0.25;
     self.titleLabel.font = [UIFont systemFontOfSize:16 weight:UIFontWeightBold];
     [self setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 
-    // Shadow
+    // 阴影
     self.layer.shadowColor = [UIColor blackColor].CGColor;
     self.layer.shadowOffset = CGSizeMake(0, 4);
     self.layer.shadowRadius = kShadowRadius;
@@ -56,7 +56,7 @@ static CGFloat const kShadowOpacity = 0.25;
     [self applyState:ScanButtonStateStart];
 }
 
-#pragma mark - Public
+#pragma mark - 公开方法
 
 - (void)setScanState:(ScanButtonState)scanState animated:(BOOL)animated {
     self->_scanState = scanState;
@@ -76,7 +76,7 @@ static CGFloat const kShadowOpacity = 0.25;
     [self setScanState:scanState animated:NO];
 }
 
-#pragma mark - Actions
+#pragma mark - 事件处理
 
 - (void)didTapSelf {
     if (self.onTap) {
@@ -84,7 +84,7 @@ static CGFloat const kShadowOpacity = 0.25;
     }
 }
 
-#pragma mark - Private
+#pragma mark - 私有方法
 
 - (void)applyState:(ScanButtonState)state {
     switch (state) {

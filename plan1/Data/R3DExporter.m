@@ -21,17 +21,17 @@
         return NO;
     }
 
-    // Metadata JSON
+    // 元数据 JSON
     BOOL ok = [zip addFileWithName:@"metadata" data:[self buildMetadataJSON:records]];
     if (!ok) return NO;
 
-    // Icon (first frame JPEG)
+    // 图标（第一帧 JPEG）
     FrameRecord *first = records.firstObject;
     if (first.jpegData) {
         [zip addFileWithName:@"icon" data:first.jpegData];
     }
 
-    // Per-frame files
+    // 逐帧数据
     for (NSUInteger i = 0; i < records.count; i++) {
         FrameRecord *record = records[i];
         NSString *prefix = [NSString stringWithFormat:@"rgbd/%lu", (unsigned long)i];
@@ -53,17 +53,17 @@
     return [zip close];
 }
 
-#pragma mark - Metadata
+#pragma mark - 元数据
 
 + (NSData *)buildMetadataJSON:(NSArray<FrameRecord *> *)records {
     FrameRecord *first = records.firstObject;
     FrameRecord *last = records.lastObject;
 
-    // FPS
+    // 计算帧率
     double duration = last.timestamp - first.timestamp;
     int fps = (duration > 0) ? (int)round(records.count / duration) : 60;
 
-    // K matrix (row-major 3x3) from first frame
+    // 相机内参 K 矩阵（行主序 3×3），取自第一帧
     simd_float3x3 K = first.intrinsics;
     float fx = K.columns[0].x;
     float fy = K.columns[1].y;
@@ -71,34 +71,34 @@
     float cy = K.columns[2].y;
     NSArray *KArray = @[@(fx), @(0), @(cx), @(0), @(fy), @(cy), @(0), @(0), @(1)];
 
-    // Depth size
-    size_t depthWidth = 192;
-    size_t depthHeight = 256;
+    // 深度图尺寸（从实际 Pixel Buffer 读取）
+    size_t depthWidth = first.depthWidth;
+    size_t depthHeight = first.depthHeight;
 
-    // Build arrays
+    // 构建数据数组
     NSMutableArray *frameTimestamps = [[NSMutableArray alloc] initWithCapacity:records.count];
     NSMutableArray *poses = [[NSMutableArray alloc] initWithCapacity:records.count];
     NSMutableArray *perFrameIntrinsics = [[NSMutableArray alloc] initWithCapacity:records.count];
 
     for (FrameRecord *record in records) {
-        // Timestamp (relative to first frame, in seconds)
+        // 时间戳（相对第一帧，单位秒）
         double relativeTime = record.timestamp - first.timestamp;
         [frameTimestamps addObject:@(relativeTime)];
 
-        // Pose: [tx, ty, tz, qx, qy, qz, qw]
+        // 位姿：[tx, ty, tz, qx, qy, qz, qw]
         simd_quatf q = record.quaternion;
         NSArray *pose = @[@(record.position.x), @(record.position.y), @(record.position.z),
                           @(q.vector.x), @(q.vector.y), @(q.vector.z), @(q.vector.w)];
         [poses addObject:pose];
 
-        // Intrinsics: [fx, fy, cx, cy]
+        // 内参：[fx, fy, cx, cy]
         simd_float3x3 intr = record.intrinsics;
         NSArray *intrArray = @[@(intr.columns[0].x), @(intr.columns[1].y),
                                 @(intr.columns[2].x), @(intr.columns[2].y)];
         [perFrameIntrinsics addObject:intrArray];
     }
 
-    // initPose = first frame pose
+    // initPose = 第一帧位姿
     simd_quatf firstQ = first.quaternion;
     NSArray *initPose = @[@(first.position.x), @(first.position.y), @(first.position.z),
                           @(firstQ.vector.x), @(firstQ.vector.y), @(firstQ.vector.z), @(firstQ.vector.w)];

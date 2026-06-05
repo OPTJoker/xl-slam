@@ -28,7 +28,7 @@
 
 @implementation ViewController
 
-#pragma mark - Lifecycle
+#pragma mark - 生命周期
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -52,7 +52,7 @@
     [self.sceneView.session pause];
 }
 
-#pragma mark - AR Session Setup
+#pragma mark - AR 会话设置
 
 - (void)setupSceneView {
     self.sceneView = [[ARSCNView alloc] initWithFrame:self.view.bounds];
@@ -114,7 +114,7 @@
 
 - (void)setupStatusUI {
     self.statusLabel = [[UILabel alloc] initWithFrame:CGRectMake(20, 60, self.view.bounds.size.width - 40, 40)];
-    self.statusLabel.text = @"Point camera at the space, then tap Start";
+    self.statusLabel.text = @"将相机对准空间，点击「开始」扫描";
     self.statusLabel.textColor = [UIColor whiteColor];
     self.statusLabel.font = [UIFont systemFontOfSize:15 weight:UIFontWeightMedium];
     self.statusLabel.textAlignment = NSTextAlignmentCenter;
@@ -138,7 +138,7 @@
     [self.view addSubview:self.scanButton];
 }
 
-#pragma mark - Scan Control
+#pragma mark - 扫描控制
 
 - (void)scanButtonTapped:(ScanButtonState)state {
     switch (state) {
@@ -156,14 +156,14 @@
     self.frameCounter = 0;
     [self.dataManager startRecording];
     [self.scanButton setScanState:ScanButtonStateEnd animated:YES];
-    self.statusLabel.text = @"Scanning\u2026 Move around to cover the space";
+    self.statusLabel.text = @"扫描中\u2026 移动以覆盖完整空间";
     [self.meshRenderer processExistingAnchorsInSession:self.sceneView.session];
 }
 
 - (void)stopScanning {
     self.isScanning = NO;
     [self.scanButton setScanState:ScanButtonStateStart animated:YES];
-    self.statusLabel.text = @"Scan complete";
+    self.statusLabel.text = @"扫描完成";
 
     NSArray<FrameRecord *> *records = [self.dataManager stopRecording];
     [self showExportAlertWithRecords:records];
@@ -237,10 +237,10 @@
 - (void)clearScene {
     [self.sceneView.session runWithConfiguration:self.configuration
                                          options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
-    self.statusLabel.text = @"Ready";
+    self.statusLabel.text = @"就绪";
 }
 
-#pragma mark - ARSCNViewDelegate (SCNSceneRendererDelegate)
+#pragma mark - ARSCNViewDelegate（SCNSceneRendererDelegate）
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer updateAtTime:(NSTimeInterval)time {
     if (!self.isScanning) {
@@ -262,34 +262,34 @@
     if (!self.isScanning || ![anchor isKindOfClass:[ARMeshAnchor class]]) {
         return;
     }
-    node.geometry = [self.meshRenderer createGeometryFromAnchor:(ARMeshAnchor *)anchor];
+    [self.meshRenderer updateNode:node withAnchor:(ARMeshAnchor *)anchor];
 }
 
 - (void)renderer:(id<SCNSceneRenderer>)renderer didUpdateNode:(SCNNode *)node forAnchor:(ARAnchor *)anchor {
     if (!self.isScanning || ![anchor isKindOfClass:[ARMeshAnchor class]]) {
         return;
     }
-    node.geometry = [self.meshRenderer createGeometryFromAnchor:(ARMeshAnchor *)anchor];
+    [self.meshRenderer updateNode:node withAnchor:(ARMeshAnchor *)anchor];
 }
 
-#pragma mark - ARSessionObserver
+#pragma mark - AR 会话观察者
 
 - (void)session:(ARSession *)session didFailWithError:(NSError *)error {
     dispatch_async(dispatch_get_main_queue(), ^{
         self.statusLabel.backgroundColor = [UIColor colorWithRed:0.8 green:0.2 blue:0.2 alpha:0.7];
-        self.statusLabel.text = [NSString stringWithFormat:@"Error: %@", error.localizedDescription];
+        self.statusLabel.text = [NSString stringWithFormat:@"错误: %@", error.localizedDescription];
     });
 }
 
 - (void)sessionWasInterrupted:(ARSession *)session {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.statusLabel.text = @"Session interrupted\u2026";
+        self.statusLabel.text = @"会话中断\u2026";
     });
 }
 
 - (void)sessionInterruptionEnded:(ARSession *)session {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.statusLabel.text = @"Resuming\u2026";
+        self.statusLabel.text = @"恢复中\u2026";
     });
     [self.sceneView.session runWithConfiguration:self.configuration
                                          options:ARSessionRunOptionResetTracking | ARSessionRunOptionRemoveExistingAnchors];
