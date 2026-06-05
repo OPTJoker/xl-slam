@@ -6,8 +6,9 @@
 ## 效果展示
 
 <p align="center">
-  <img src="scan01.png" alt="扫描效果图1" width="45%" />
-  <img src="scan02.png" alt="扫描效果图2" width="45%" />
+  <img src="scan01.png" alt="扫描效果图1" width="30%" style="margin-right: 12px;" />
+  <img src="scan02.png" alt="扫描效果图2" width="30%" style="margin-right: 12px;" />
+  <img src="r3d.png" alt="R3D导出文件" width="30%" />
 </p>
 
 ---
