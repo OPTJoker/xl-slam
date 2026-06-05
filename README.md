@@ -3,6 +3,13 @@
 > 分析日期: 2026-06-05
 > 项目说明: 基于 ARKit + SceneKit 的 iOS 空间扫描与 Record3D 导出工具
 
+## 效果展示
+
+<p align="center">
+  <img src="scan01.png" alt="扫描效果图1" width="45%" />
+  <img src="scan02.png" alt="扫描效果图2" width="45%" />
+</p>
+
 ---
 
 ## 一、项目概述
