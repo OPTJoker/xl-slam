@@ -187,7 +187,7 @@ ARMeshAnchor.geometry (ARMeshGeometry)
 - 它不是全局的 Z 排序，更像是一个局部渲染队列号
 - 与 `writesToDepthBuffer` / 深度测试配合使用才能达到正确遮挡效果
 
-<br>
+
 ### 4.5 异步采集
 
 JPEG + LZFSE 压缩派发到串行后台队列 `com.plan1.scanprocessing`，主线程只做元数据提取（pose、内参、时间戳），避免主线程卡顿。
