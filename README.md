@@ -169,12 +169,25 @@ ARMeshAnchor.geometry (ARMeshGeometry)
 
 **深度遮挡原理**
 
-每个 ARMeshAnchor 节点下挂两个子节点：
-1. **遮挡体**（renderingOrder=0，先渲染）— 实体三角形填充，只写 alpha 通道（无 RGB 可见输出），`writesToDepthBuffer=YES`，填充深度缓冲区
-2. **线框**（renderingOrder=1，后渲染）— `SCNFillModeLines` 边线模式，`writesToDepthBuffer=NO`，深度测试自动隐藏被前面实体表面挡住的线
+在 SceneKit 中，`renderingOrder` 控制节点的渲染优先级：
+- 默认值 = 0
+- 值越小越先渲染，值越大越晚渲染
+- 晚渲染的内容会覆盖（绘制在）先渲染的内容之上
 
-这样桌面后面的地面网格线就不会显示，实现了前后遮挡效果。
+在 `MeshRenderer.m` 里，每个网格锚点节点下挂两个子节点来实现深度遮挡：
 
+**遮挡体** (renderingOrder = 0)  →  先渲染，写入深度缓冲
+**线框**   (renderingOrder = 1)  →  后渲染，不写深度，但深度测试会与前者的深度值比较
+
+遮挡体先画进深度缓冲，线框后画时 GPU 做深度测试 — 被实体表面挡住的线框部分直接丢弃，从而实现"桌面后面的网格线不显示"的效果。
+
+**关键点**
+
+- `renderingOrder` 只在**同一父节点下的同级节点**之间起作用，不同锚点树之间的渲染顺序不保证
+- 它不是全局的 Z 排序，更像是一个局部渲染队列号
+- 与 `writesToDepthBuffer` / 深度测试配合使用才能达到正确遮挡效果
+
+<br>
 ### 4.5 异步采集
 
 JPEG + LZFSE 压缩派发到串行后台队列 `com.plan1.scanprocessing`，主线程只做元数据提取（pose、内参、时间戳），避免主线程卡顿。

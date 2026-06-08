@@ -156,7 +156,7 @@
     self.frameCounter = 0;
     [self.dataManager startRecording];
     [self.scanButton setScanState:ScanButtonStateEnd animated:YES];
-    self.statusLabel.text = @"扫描中\u2026 移动以覆盖完整空间";
+    self.statusLabel.text = @"扫描中...";
     [self.meshRenderer processExistingAnchorsInSession:self.sceneView.session];
 }
 
